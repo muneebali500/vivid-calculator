@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Vivid Calc — Expression Parser</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="bg">
+      <span class="orb o1"></span>
+      <span class="orb o2"></span>
+      <span class="orb o3"></span>
+    </div>
+
+    <main class="wrap">
+      <header class="hdr">
+        <div class="brand">
+          <div class="logo">∑</div>
+          <div>
+            <h1>Vivid Calc</h1>
+            <p>Expression parser • keyboard-first • history</p>
+          </div>
+        </div>
+
+        <div class="help">
+          <span class="kbd">Enter</span>=eval
+          <span class="dot">•</span>
+          <span class="kbd">Esc</span>=clear
+          <span class="dot">•</span>
+          <span class="kbd">⌫</span>=backspace
+        </div>
+      </header>
+
+      <section class="grid">
+        <section class="calc card">
+          <div class="screen">
+            <div class="expr" id="expr">0</div>
+            <div class="mini" id="mini">Ready</div>
+          </div>
+
+          <div class="keys" id="keys">
+            <!-- row 1 -->
+            <button class="k ghost" data-action="clear">AC</button>
+            <button class="k ghost" data-action="back">⌫</button>
+            <button class="k ghost" data-value="(">(</button>
+            <button class="k ghost" data-value=")">)</button>
+
+            <!-- row 2 -->
+            <button class="k ghost" data-value="7">7</button>
+            <button class="k ghost" data-value="8">8</button>
+            <button class="k ghost" data-value="9">9</button>
+            <button class="k op" data-value="/">÷</button>
+
+            <!-- row 3 -->
+            <button class="k ghost" data-value="4">4</button>
+            <button class="k ghost" data-value="5">5</button>
+            <button class="k ghost" data-value="6">6</button>
+            <button class="k op" data-value="*">×</button>
+
+            <!-- row 4 -->
+            <button class="k ghost" data-value="1">1</button>
+            <button class="k ghost" data-value="2">2</button>
+            <button class="k ghost" data-value="3">3</button>
+            <button class="k op" data-value="-">−</button>
+
+            <!-- row 5 -->
+            <button class="k ghost" data-value="0">0</button>
+            <button class="k ghost" data-value=".">.</button>
+            <button class="k ghost" data-value="%">%</button>
+            <button class="k op" data-value="+">+</button>
+
+            <!-- row 6 -->
+            <button class="k ghost" data-value="^">^</button>
+            <button class="k ghost" data-action="neg">±</button>
+            <button class="k equal" data-action="eval">=</button>
+          </div>
+        </section>
+
+        <aside class="history card">
+          <div class="histTop">
+            <h2>History</h2>
+            <button class="miniBtn" id="clearHist">Clear</button>
+          </div>
+          <div class="histList" id="histList"></div>
+        </aside>
+      </section>
+
+      <footer class="ft">
+        Supports: <strong>+</strong> <strong>-</strong> <strong>*</strong>
+        <strong>/</strong> <strong>%</strong> <strong>^</strong> and
+        parentheses. Unary minus works: <strong>-5</strong>,
+        <strong>(-3+2)</strong>.
+      </footer>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
