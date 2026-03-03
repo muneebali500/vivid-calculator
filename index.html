@@ -29,12 +29,15 @@
           </div>
         </div>
 
-        <div class="help">
+        <div class="help" style="align-items: center; gap: 12px">
           <span class="kbd">Enter</span>=eval
           <span class="dot">•</span>
           <span class="kbd">Esc</span>=clear
           <span class="dot">•</span>
           <span class="kbd">⌫</span>=backspace
+          <button class="info-btn" id="infoBtn" title="About Vivid Calc">
+            ℹ
+          </button>
         </div>
       </header>
 
@@ -100,6 +103,246 @@
       </footer>
     </main>
 
-    <script src="script.js"></script>
+    <!-- ===== Info Popup ===== -->
+    <div class="popup-overlay" id="popupOverlay">
+      <div
+        class="popup-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="popupTitle"
+      >
+        <div class="popup-header">
+          <button class="popup-close" id="popupClose" aria-label="Close">
+            ✕
+          </button>
+          <div class="popup-logo">∑</div>
+          <h2 id="popupTitle">Vivid Calc</h2>
+          <p class="popup-tagline">
+            Expression parser · keyboard-first · history
+          </p>
+        </div>
+
+        <div class="popup-body">
+          <div class="popup-section">
+            <h3><span class="sec-icon">📖</span> What It Does</h3>
+            <p>
+              Vivid Calc is a browser-based calculator that evaluates full
+              mathematical expressions — not just button-by-button arithmetic.
+              Type a whole expression like <strong>3^2 + (5*4) - 7%2</strong>
+              and get the precise result instantly.
+            </p>
+          </div>
+
+          <div class="popup-section">
+            <h3><span class="sec-icon">🎮</span> How to Use</h3>
+            <ul>
+              <li>
+                Click the on-screen keys <strong>or type directly</strong> on
+                your keyboard
+              </li>
+              <li>
+                Press <strong>Enter</strong> (or <strong>=</strong>) to evaluate
+              </li>
+              <li>
+                Press <strong>Esc</strong> to clear the current expression
+              </li>
+              <li>
+                Press <strong>Backspace ⌫</strong> to delete the last character
+              </li>
+              <li>Use <strong>±</strong> to negate the current expression</li>
+              <li>
+                Click any <strong>history entry</strong> to reload it for
+                editing
+              </li>
+            </ul>
+          </div>
+
+          <div class="popup-section">
+            <h3><span class="sec-icon">✨</span> Supported Operators</h3>
+            <div class="op-tags">
+              <span class="op-tag accent">+ Addition</span>
+              <span class="op-tag accent">− Subtraction</span>
+              <span class="op-tag accent">× Multiplication</span>
+              <span class="op-tag accent">÷ Division</span>
+              <span class="op-tag">% Modulo</span>
+              <span class="op-tag">^ Exponent</span>
+              <span class="op-tag">( ) Grouping</span>
+              <span class="op-tag">-x Unary Minus</span>
+            </div>
+          </div>
+
+          <div class="popup-section">
+            <h3><span class="sec-icon">⚙️</span> How It Works</h3>
+            <div class="highlight-box">
+              <ul
+                style="
+                  padding-left: 16px;
+                  margin: 0;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 6px;
+                "
+              >
+                <li>
+                  <strong>Tokenizer:</strong> Splits your input into numbers,
+                  operators, and parentheses
+                </li>
+                <li>
+                  <strong>Shunting-Yard Algorithm:</strong> Converts infix to
+                  Reverse Polish Notation (RPN) respecting precedence &
+                  associativity
+                </li>
+                <li>
+                  <strong>RPN Evaluator:</strong> Walks the postfix stack to
+                  compute the final value
+                </li>
+                <li>
+                  <strong>Unary Minus:</strong> Detected contextually — e.g.
+                  <strong>-5</strong>, <strong>(-3+2)</strong>,
+                  <strong>3*-1</strong>
+                </li>
+                <li>
+                  <strong>History:</strong> Stored in
+                  <code>sessionStorage</code>, persists across reloads within
+                  the same tab session
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="popup-section">
+            <h3><span class="sec-icon">🚀</span> Key JavaScript Concepts</h3>
+            <div class="highlight-box">
+              <ul
+                style="
+                  padding-left: 16px;
+                  margin: 0;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 6px;
+                "
+              >
+                <li>
+                  <strong>Tokenizer:</strong> Iterates characters with a
+                  <code>while</code> loop, greedily consuming multi-digit
+                  numbers and classifying symbols into typed token objects
+                </li>
+                <li>
+                  <strong>Shunting-Yard Algorithm:</strong> Classic Dijkstra
+                  algorithm using an operator <code>stack</code> and output
+                  <code>queue</code> to handle precedence, left/right
+                  associativity, and parentheses
+                </li>
+                <li>
+                  <strong>RPN Stack Evaluation:</strong> Walks the postfix token
+                  array, pushing operands and applying operators via a numeric
+                  stack — unary ops pop one value, binary pop two
+                </li>
+                <li>
+                  <strong>Unary Minus Detection:</strong> Contextual check
+                  against the previous token — if <code>null</code>, after
+                  <code>(</code>, or after another operator,
+                  <code>-</code> becomes <code>u-</code> with higher precedence
+                </li>
+                <li>
+                  <strong>Event Delegation:</strong> Single
+                  <code>click</code> listener on the key grid reads
+                  <code>data-value</code> / <code>data-action</code> attributes
+                  instead of binding per-button
+                </li>
+                <li>
+                  <strong>Keyboard Handling:</strong>
+                  <code>keydown</code> listener maps digit, operator, and
+                  control keys to the same <code>inputValue</code> /
+                  <code>doAction</code> functions used by the UI buttons
+                </li>
+                <li>
+                  <strong>localStorage &amp; sessionStorage:</strong> History
+                  persists across page refreshes via <code>localStorage</code>;
+                  the info popup "seen" flag uses <code>sessionStorage</code> so
+                  it reappears each new tab session
+                </li>
+                <li>
+                  <strong>Number Formatting:</strong> Result rounded to 12
+                  decimal places with <code>Number.EPSILON</code> trick to
+                  suppress floating-point noise like
+                  <code>0.30000000000004</code>
+                </li>
+                <li>
+                  <strong>Web Animations API:</strong> Error shake uses
+                  <code>element.animate()</code> with a keyframe array for a
+                  native, GPU-accelerated nudge effect
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="popup-section">
+            <h3><span class="sec-icon">🎨</span> Design Features</h3>
+            <ul>
+              <li>
+                Animated background <strong>floating orbs</strong> using CSS
+                <code>@keyframes</code> with staggered
+                <code>animation-delay</code> and
+                <code>mix-blend-mode: multiply</code> for painterly depth
+              </li>
+              <li>
+                <strong>Glassmorphism cards</strong> — semi-transparent white
+                backgrounds with <code>backdrop-filter: blur</code>, subtle
+                border strokes, and layered box shadows
+              </li>
+              <li>
+                <strong>CSS custom properties</strong> throughout for a
+                consistent palette of vivid purples, teals, pinks, and ambers
+                with a single source of truth
+              </li>
+              <li>
+                Operator keys use a <strong>purple-to-pink gradient</strong> to
+                visually separate them from digit keys at a glance
+              </li>
+              <li>
+                The <strong>= button spans two columns</strong> with a
+                green-to-teal gradient, giving it deliberate visual weight as
+                the primary action
+              </li>
+              <li>
+                <strong>Hover lift micro-interactions</strong> on every key —
+                <code>translateY(-2px)</code> + elevated shadow — and a subtle
+                scale-down on <code>:active</code>
+              </li>
+              <li>
+                History items are <strong>clickable cards</strong> with the same
+                hover-lift treatment, reinforcing the interactive affordance
+              </li>
+              <li>
+                Responsive <strong>two-column grid</strong> (calc + history)
+                collapses to single-column below 900 px via a single
+                <code>@media</code> breakpoint
+              </li>
+              <li>
+                Popup entrance uses a
+                <strong>combined opacity + translateY + scale</strong> CSS
+                transition for a polished slide-up-and-bloom feel
+              </li>
+            </ul>
+          </div>
+
+          <div class="popup-section">
+            <h3><span class="sec-icon">💻</span> Built With</h3>
+            <div class="op-tags">
+              <span class="op-tag">HTML5</span>
+              <span class="op-tag">CSS3</span>
+              <span class="op-tag">Vanilla JS</span>
+              <span class="op-tag">Shunting-Yard</span>
+              <span class="op-tag">localStorage</span>
+            </div>
+          </div>
+
+          <button class="popup-cta" id="popupCta">🚀 Start Calculating!</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
   </body>
 </html>
