@@ -355,7 +355,6 @@ function formatNumber(n) {
 }
 
 /* ---------------- History persistence ---------------- */
-
 function loadHistory() {
   try {
     const raw = localStorage.getItem(HIST_KEY);

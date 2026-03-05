@@ -58,6 +58,13 @@ body {
   overflow-x: hidden;
 }
 
+@media (min-width: 991px) {
+  body {
+    display: flex;
+    align-items: center;
+  }
+}
+
 .bg {
   position: fixed;
   inset: 0;
@@ -114,7 +121,8 @@ body {
 }
 
 .wrap {
-  max-width: 980px;
+  width: 980px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 34px 18px 44px;
   position: relative;
@@ -166,6 +174,14 @@ h1 {
   gap: 8px;
   flex-wrap: wrap;
 }
+
+@media (max-width: 575px) {
+  .help {
+    gap: 5px;
+    font-size: 10px;
+  }
+}
+
 .kbd {
   display: inline-block;
   padding: 6px 10px;
@@ -351,6 +367,13 @@ h1 {
 }
 .info-btn:active {
   transform: scale(0.96);
+}
+
+@media (max-width: 575px) {
+  .info-btn {
+    height: 25px;
+    width: 25px;
+  }
 }
 
 /* ===== Popup Overlay ===== */
